@@ -231,5 +231,5 @@ This notebook performs an in-depth exploratory data analysis on the PJM East (PJ
 **Clarissa Faith Cordero Santiago**  
 BS Data Science — Mapúa University, School of Information Technology  
 Manila, Philippines  
-santiagoclarissafaith@gmail.com  
+cfcsantiago@mymail.mapua.edu.ph / santiagoclarissafaith@gmail.com  
 [linkedin.com/in/clarissa-faith-santiago](https://www.linkedin.com/in/clarissa-faith-santiago)
