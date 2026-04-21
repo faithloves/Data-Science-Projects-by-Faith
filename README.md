@@ -1,0 +1,235 @@
+# Data Science Portfolio — Clarissa Faith C. Santiago
+
+**BS Data Science | Mapúa University | School of Information Technology**
+
+This repository contains four Jupyter Notebook projects covering machine learning, customer analytics, and time series analysis. Each notebook demonstrates an end-to-end data science workflow — from raw data cleaning and exploratory analysis through to modeling, evaluation, and business or scientific interpretation.
+
+---
+
+## Repository Contents
+
+| Notebook | Type | Key Techniques |
+|---|---|---|
+| Bank Customer Churn Prediction | Supervised ML | Stacking Ensemble, Random Forest, XGBoost |
+| Customer Segmentation with K-Means | Unsupervised ML | K-Means Clustering, EDA, Feature Engineering |
+| Houston Temperature Prediction | Time Series Forecasting | ARIMA, Auto-ARIMA, Stationarity Testing |
+| Electricity Load Time Series EDA | Time Series EDA | Seasonal Decomposition, ACF/PACF, Trend Analysis |
+
+---
+
+## Project 1: Bank Customer Churn Prediction
+
+**File:** `Bank_Customer_Churn_Prediction.ipynb`
+
+### Overview
+This project builds a stacking ensemble model to predict whether a bank customer is likely to churn (leave the bank). Rather than relying on a single algorithm, the model combines the strengths of two base learners — Random Forest and XGBoost — and feeds their probability outputs into a Logistic Regression meta-model for the final prediction.
+
+### Dataset
+- Source: `Churn_Modelling.csv`
+- Size: 10,000 bank customer records
+- Target variable: `Exited` (1 = churned, 0 = retained)
+
+### Methodology
+
+**Data Preprocessing**
+- Dropped non-informative columns (`RowNumber`, `Surname`)
+- Applied Label Encoding to categorical variables (`Geography`, `Gender`)
+
+**Feature Engineering**
+- Created `AgeGroup` — customers binned into five age categories (Young Adults, Early Middle-Age, Mid-Life Adults, Pre-Retirement, Retirees & Seniors) to help the model generalize across age-related behavioral patterns
+- Created `BalanceSalaryRatio` — balance normalized by estimated salary to capture relative financial stability, preventing high-salary customers from distorting the balance feature's importance
+
+**Modeling: Stacking Ensemble**
+- Model 1 (Base): Random Forest (`n_estimators=100`, `max_depth=10`, balanced class weights)
+- Model 2 (Base): XGBoost (`n_estimators=100`, `max_depth=5`, logloss evaluation)
+- Meta-Model: Logistic Regression trained on the probability outputs of both base models
+
+**Evaluation**
+- Cross-validation accuracy: **95.07%**
+- Test set accuracy: **85.80%**
+- The gap between CV and test accuracy is moderate, indicating reasonable generalization without severe overfitting
+
+**Feature Importance**
+- Random Forest top features: `Age`, `NumOfProducts`, `AgeGroup`
+- XGBoost top features: `NumOfProducts`, `IsActiveMember`, `Age`
+- Averaged importance (rank averaging): `NumOfProducts` ranked as the most influential predictor overall, followed by `Age` and `IsActiveMember`
+
+### Key Findings
+Number of products held and customer age are the strongest predictors of churn. Active membership status also significantly impacts retention. Features like `HasCrCard`, `Tenure`, and `Gender` contribute minimally to prediction.
+
+### Libraries
+`pandas`, `numpy`, `matplotlib`, `seaborn`, `scikit-learn`, `xgboost`
+
+---
+
+## Project 2: Customer Segmentation with K-Means Algorithm
+
+**File:** `Customer_Segmentation_with_KMeans_Algorithm.ipynb`
+
+### Overview
+This project applies K-Means clustering to over 500,000 retail transaction records from a UK-based online gift store to segment customers into distinct behavioral groups. The goal is to help businesses understand different customer types and develop targeted marketing strategies for each segment.
+
+### Dataset
+- Source: [Kaggle — Online Retail Customer Clustering](https://www.kaggle.com/datasets/hellbuoy/online-retail-customer-clustering/data)
+- Coverage: December 2010 – December 2011, UK-based online gift store
+- Size: 500,000+ transaction records
+
+### Methodology
+
+**Data Preprocessing**
+- Removed rows with missing `CustomerID` values
+- Filtered out invalid transactions (negative quantities, zero unit prices)
+- Retained apparent duplicate rows as they represent distinct items within the same transaction, not true duplicates
+- Computed `TotalPrice` per line item (`Quantity × UnitPrice`)
+
+**Exploratory Data Analysis**
+- Unit price distribution showed most products priced under £10
+- Top 10 most purchased products identified by total quantity sold
+- Revenue analysis by country confirmed that the UK dominates sales, supporting a UK-focused segmentation approach
+
+**Feature Engineering**
+- Aggregated transaction-level data into customer-level metrics:
+  - `TransactionCount` — total number of unique invoices (purchase frequency)
+  - `Quantity` — total items purchased
+  - `TotalPrice` — total revenue generated per customer
+- Applied StandardScaler to normalize features before clustering, ensuring no single feature dominates due to scale differences
+
+**Clustering: K-Means**
+- Applied the Elbow Method (WCSS) to determine the optimal number of clusters
+- While the elbow suggested k=2, k=4 was selected to capture more nuanced behavioral differences relevant to practical marketing use cases
+
+**Resulting Customer Segments**
+| Segment | Behavior Profile |
+|---|---|
+| Occasional Buyers | Low frequency, low spend |
+| Regular Buyers | Moderate frequency and spend |
+| Loyal Customers | High frequency, consistent spend |
+| High Bulk Buyers | High quantity purchases, significant revenue contribution |
+
+### Business Recommendations
+- **High Bulk Buyers & Loyal Customers:** Retention strategies, exclusive rewards, early access programs
+- **Regular Buyers:** Upsell incentives, product bundling offers
+- **Occasional Buyers:** Re-engagement campaigns, discount promotions to increase purchase frequency
+
+### Libraries
+`pandas`, `numpy`, `matplotlib`, `seaborn`, `scikit-learn`
+
+---
+
+## Project 3: Houston Temperature Prediction — Time Series Analysis
+
+**File:** `Temperature_Prediction_Time_Series_Analysis.ipynb`
+
+### Overview
+This project forecasts the next 6 months of average monthly temperature for Houston, Texas using ARIMA-based time series models. It compares two approaches — manually specified ARIMA and automatically optimized Auto-ARIMA — and evaluates their performance using standard error metrics.
+
+### Dataset
+- Source: `temperature.csv` — 5 years of hourly temperature readings from 30 US/Canada cities and 6 Israeli cities
+- Scope for this project: Houston, Texas only
+- Resampled to monthly average for modeling
+
+### Methodology
+
+**Data Preprocessing & Feature Engineering**
+- Parsed datetime index and extracted Houston temperature column
+- Handled missing values via linear interpolation with forward/backward fill for edge cases
+- Resampled hourly data to monthly averages
+
+**Exploratory Data Analysis**
+- Monthly temperature plot revealed clear seasonality with no significant long-term trend
+- July recorded the highest average monthly temperature (301.98 K)
+- January recorded the lowest average monthly temperature (284.92 K)
+
+**Stationarity Testing: ADF Test**
+- ADF Statistic ≈ -0.045 (greater than 5% critical value of -2.89)
+- p-value ≈ 0.95 (greater than 0.05)
+- Result: Series is non-stationary → first differencing applied before modeling
+
+**ACF and PACF Analysis**
+- ACF showed significant autocorrelation up to lag 3 → q = 3
+- PACF showed cutoff at lag 2 → p = 2
+- Differencing already applied → d = 0
+
+**Models Compared**
+
+*Auto-ARIMA*
+- Automatically selected optimal (p, d, q) parameters using AIC minimization
+- Seasonal component enabled (`m=12`)
+- MAE: 2.59 K | MSE: 8.99 | RMSE: 2.99 K
+
+*Manual ARIMA — order (2, 0, 3)*
+- Parameters derived from ACF/PACF analysis
+- MAE: 4.16 K | MSE: high | RMSE: 4.52 K
+
+### Key Findings
+Auto-ARIMA produced lower error metrics and a more generalized, stable forecast. Manual ARIMA better captures rapid short-term fluctuations but at the cost of higher overall error. Both models show widening confidence intervals over time, reflecting increasing uncertainty in longer-horizon forecasts.
+
+### Libraries
+`pandas`, `numpy`, `matplotlib`, `seaborn`, `statsmodels`, `pmdarima`, `scikit-learn`
+
+---
+
+## Project 4: Time Series EDA on Electricity Load (PJME)
+
+**File:** `Time_Series_Exploratory_Data_Analysis_on_Electricity_Load.ipynb`
+
+### Overview
+This notebook performs an in-depth exploratory data analysis on the PJM East (PJME) hourly electricity load dataset, analyzing consumption patterns across hourly, daily, monthly, and yearly time scales. The project uses seasonal decomposition and ACF/PACF analysis to uncover the structural components of electricity demand.
+
+### Dataset
+- Source: `PJME_hourly.csv` — PJM Interconnection hourly electricity load data
+- Coverage: 2002–2018
+- Variable: `PJME_MW` — electricity load in megawatts
+
+### Methodology
+
+**Data Exploration**
+- Parsed and indexed datetime column
+- Resampled data to yearly, monthly, and daily averages for multi-scale trend analysis
+
+**Consumption Pattern Analysis**
+- Extracted `Hour`, `DayOfWeek`, and `Month` features from the datetime index
+- Computed average electricity load by each time granularity
+
+**Key Findings by Time Dimension**
+
+| Dimension | Peak | Lowest |
+|---|---|---|
+| Hour of day | 7 PM (evening residential/commercial activity) | 4 AM (overnight inactivity) |
+| Day of week | Tuesday (peak business operations) | Sunday (reduced industrial and commercial activity) |
+| Month | July (summer cooling demand) | April (mild weather, low HVAC demand) |
+
+**Trend Analysis**
+- Overall yearly average load declined from 2002 to 2018, with peaks around 2006–2008
+- Strong repeating seasonal cycles visible in monthly averages
+- Daily load shows frequent fluctuation driven by usage patterns
+
+**Time Series Decomposition**
+- Applied seasonal decomposition to separate trend, seasonality, and residual components from the raw load signal
+- ACF and PACF plots used to identify autocorrelation structure in the series
+
+### Libraries
+`pandas`, `matplotlib`, `statsmodels`
+
+---
+
+## Technical Stack
+
+| Category | Tools & Libraries |
+|---|---|
+| Language | Python 3 |
+| Data Manipulation | pandas, numpy |
+| Visualization | matplotlib, seaborn |
+| Machine Learning | scikit-learn, xgboost |
+| Time Series | statsmodels, pmdarima |
+| Environment | Jupyter Notebook |
+
+---
+
+## Author
+
+**Clarissa Faith Cordero Santiago**  
+BS Data Science — Mapúa University, School of Information Technology  
+Manila, Philippines  
+santiagoclarissafaith@gmail.com  
+[linkedin.com/in/clarissa-faith-santiago](https://www.linkedin.com/in/clarissa-faith-santiago)
