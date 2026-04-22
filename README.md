@@ -32,22 +32,28 @@ This project builds a stacking ensemble model to predict whether a bank customer
 ### Methodology
 
 **Data Preprocessing**
-- Dropped non-informative columns (`RowNumber`, `Surname`)
-- Applied Label Encoding to categorical variables (`Geography`, `Gender`)
+- Dropped non-informative columns (`RowNumber`, `Surname`, `CustomerId`) from the model input; `CustomerId` and `Surname` are preserved separately in a tracker dataframe for result display
+- Applied **Label Encoding** to `Gender` (binary feature)
+- Applied **One-Hot Encoding** to `Geography` (multi-class: France, Germany, Spain) with `drop_first=True` to avoid multicollinearity
 
 **Feature Engineering**
 - Created `AgeGroup` — customers binned into five age categories (Young Adults, Early Middle-Age, Mid-Life Adults, Pre-Retirement, Retirees & Seniors) to help the model generalize across age-related behavioral patterns
-- Created `BalanceSalaryRatio` — balance normalized by estimated salary to capture relative financial stability, preventing high-salary customers from distorting the balance feature's importance
+- Created `BalanceSalaryRatio` — balance normalized by estimated salary to capture relative financial stability, preventing high-salary customers from distorting the balance feature's importance, and values are capped at the 99th percentile to prevent extreme outliers from distorting model predictions
 
-**Modeling: Stacking Ensemble**
-- Model 1 (Base): Random Forest (`n_estimators=100`, `max_depth=10`, balanced class weights)
-- Model 2 (Base): XGBoost (`n_estimators=100`, `max_depth=5`, logloss evaluation)
-- Meta-Model: Logistic Regression trained on the probability outputs of both base models
+### Modeling: Stacking Ensemble
+
+The stacking pipeline follows these steps:
+
+1. **Base Model 1 — Random Forest** (`n_estimators=100`, `max_depth=10`, `class_weight="balanced"`) accounts for class imbalance using balanced weights.
+2. **Base Model 2 — XGBoost** (`n_estimators=100`, `max_depth=5`, `eval_metric="logloss"`) uses `scale_pos_weight` computed from the actual class ratio in the training set to handle imbalance.
+3. **Out-of-Fold (OOF) Predictions** are generated for both base models using 5-fold cross-validation. Each fold is predicted by a model that was never trained on it, producing honest, unbiased probability estimates and preventing data leakage into the meta-model.
+4. **Meta-Feature Scaling** is applied via `StandardScaler` before training the meta-model, ensuring Logistic Regression receives consistently scaled inputs.
+5. **Meta-Model — Logistic Regression** is trained on the scaled OOF predictions, learning the optimal blend of both base models' outputs into a final churn probability.
 
 **Evaluation**
 - Cross-validation accuracy: **95.07%**
 - Test set accuracy: **85.80%**
-- The gap between CV and test accuracy is moderate, indicating reasonable generalization without severe overfitting
+- The OOF-based cross-validation ensures the CV accuracy reflects honest generalization performance. The moderate gap between CV and test accuracy indicates reasonable generalization without severe overfitting. The model performs well at identifying retained customers, but is less confident in flagging churners — effective in most cases but may occasionally miss customers who are likely to leave.
 
 **Feature Importance**
 - Random Forest top features: `Age`, `NumOfProducts`, `AgeGroup`
