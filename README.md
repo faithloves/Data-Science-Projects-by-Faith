@@ -51,8 +51,8 @@ The stacking pipeline follows these steps:
 5. **Meta-Model — Logistic Regression** is trained on the scaled OOF predictions, learning the optimal blend of both base models' outputs into a final churn probability.
 
 **Evaluation**
-- Cross-validation accuracy: **95.07%**
-- Test set accuracy: **85.80%**
+- Cross-validation accuracy: **85.67%**
+- Test set accuracy: **86.40%**
 - The OOF-based cross-validation ensures the CV accuracy reflects honest generalization performance. The moderate gap between CV and test accuracy indicates reasonable generalization without severe overfitting. The model performs well at identifying retained customers, but is less confident in flagging churners — effective in most cases but may occasionally miss customers who are likely to leave.
 
 **Feature Importance**
