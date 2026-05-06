@@ -123,55 +123,92 @@ This project applies K-Means clustering to over 500,000 retail transaction recor
 ---
 
 ## Project 3: Houston Temperature Prediction — Time Series Analysis
-
 **File:** `Temperature_Prediction_Time_Series_Analysis.ipynb`
 
 ### Overview
-This project forecasts the next 6 months of average monthly temperature for Houston, Texas using ARIMA-based time series models. It compares two approaches — manually specified ARIMA and automatically optimized Auto-ARIMA — and evaluates their performance using standard error metrics.
+This project forecasts Houston, Texas's monthly average temperature for 
+the next 6 months beyond the available data (December 2017 – May 2018) 
+using ARIMA-based time series models. Two approaches are developed and 
+compared — manually specified ARIMA and automatically optimized 
+Auto-ARIMA — first validated on a held-out 12-month test set against 
+real values, then retrained on the full dataset to generate the final 
+future forecast.
 
 ### Dataset
-- Source: `temperature.csv` — 5 years of hourly temperature readings from 30 US/Canada cities and 6 Israeli cities
-- Scope for this project: Houston, Texas only
-- Resampled to monthly average for modeling
+- **Source:** `temperature.csv` — 5 years of hourly temperature readings 
+  from 30 US/Canada cities and 6 Israeli cities
+- **Scope:** Houston, Texas only
+- **Resampled** to monthly averages for modeling
 
 ### Methodology
 
 **Data Preprocessing & Feature Engineering**
 - Parsed datetime index and extracted Houston temperature column
-- Handled missing values via linear interpolation with forward/backward fill for edge cases
+- Handled missing values via linear interpolation with forward/backward 
+  fill for edge cases
 - Resampled hourly data to monthly averages
 
 **Exploratory Data Analysis**
-- Monthly temperature plot revealed clear seasonality with no significant long-term trend
+- Monthly temperature plot revealed clear seasonality with no significant 
+  long-term trend
 - July recorded the highest average monthly temperature (301.98 K)
 - January recorded the lowest average monthly temperature (284.92 K)
 
 **Stationarity Testing: ADF Test**
 - ADF Statistic ≈ -0.045 (greater than 5% critical value of -2.89)
 - p-value ≈ 0.95 (greater than 0.05)
-- Result: Series is non-stationary → first differencing applied before modeling
+- Result: Series is non-stationary → first differencing required
+- Note: Differencing is handled internally by the models (d=1), 
+  not applied as a preprocessing step, to ensure a fair comparison
 
 **ACF and PACF Analysis**
 - ACF showed significant autocorrelation up to lag 3 → q = 3
 - PACF showed cutoff at lag 2 → p = 2
-- Differencing already applied → d = 0
+- These findings inform the Manual ARIMA parameter selection and 
+  confirm d = 1 is appropriate
+
+**Train/Test Split**
+- Training set: November 2012 – December 2016
+- Test set: January 2017 – November 2017 (12 months, held out)
+- Both models trained on training set and evaluated against real 
+  held-out values for valid out-of-sample assessment
 
 **Models Compared**
 
-*Auto-ARIMA*
-- Automatically selected optimal (p, d, q) parameters using AIC minimization
-- Seasonal component enabled (`m=12`)
-- MAE: 2.59 K | MSE: 8.99 | RMSE: 2.99 K
+*Auto-ARIMA — order (3, 1, 2), seasonal (0, 0, 0)[12]*
+- Automatically selected optimal parameters via AIC-based grid search 
+  over the full parameter space (`stepwise=False`)
+- `d=1` fixed based on ADF test result confirming non-stationarity
+- `D=0` set to prevent seasonal over-differencing, justified by the 
+  stable seasonal amplitude observed in EDA
+- The selected seasonal order (0, 0, 0)[12] indicates that no seasonal 
+  AR, MA, or differencing terms were needed — the regular ARIMA(3, 1, 2) 
+  terms were sufficient to capture the seasonal pattern
+- **Test Set Metrics — MAE: 0.919 K | MSE: 1.757 | RMSE: 1.325 K**
 
-*Manual ARIMA — order (2, 0, 3)*
-- Parameters derived from ACF/PACF analysis
-- MAE: 4.16 K | MSE: high | RMSE: 4.52 K
+*Manual ARIMA — order (2, 1, 3)*
+- Parameters derived from ACF/PACF analysis; d=1 applied internally
+- **Test Set Metrics — MAE: 0.972 K | MSE: 1.896 | RMSE: 1.377 K**
+
+**Future Forecast (Dec 2017 – May 2018)**
+- Both models retrained on full dataset after validation
+- Forecasts from both models are nearly identical (max difference: 0.15 K)
+- Predicted trajectory: winter low ~290 K (January 2018) rising to 
+  ~298.5 K by May 2018, consistent with Houston's historical seasonal pattern
 
 ### Key Findings
-Auto-ARIMA produced lower error metrics and a more generalized, stable forecast. Manual ARIMA better captures rapid short-term fluctuations but at the cost of higher overall error. Both models show widening confidence intervals over time, reflecting increasing uncertainty in longer-horizon forecasts.
+Both models performed comparably well on the held-out test set, with 
+average errors below 1 Kelvin. Auto-ARIMA achieved marginally lower 
+error metrics across all measures and is selected as the primary model. 
+A notable finding is that Auto-ARIMA required domain-informed constraints 
+— derived from ADF testing and EDA — to avoid over-differencing and 
+produce a meaningful forecast. The final 6-month forecasts from both 
+models are in strong agreement, supporting confidence in the predicted 
+temperature trajectory.
 
 ### Libraries
-`pandas`, `numpy`, `matplotlib`, `seaborn`, `statsmodels`, `pmdarima`, `scikit-learn`
+`pandas`, `numpy`, `matplotlib`, `seaborn`, `statsmodels`, `pmdarima`, 
+`scikit-learn`
 
 ---
 
