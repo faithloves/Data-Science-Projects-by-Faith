@@ -19,15 +19,16 @@ This repository contains four Jupyter Notebook projects covering machine learnin
 
 ## Project 1: Bank Customer Churn Prediction
 
+**Type:** Group Project  
 **File:** `Bank_Customer_Churn_Prediction.ipynb`
 
 ### Overview
 This project builds a stacking ensemble model to predict whether a bank customer is likely to churn (leave the bank). Rather than relying on a single algorithm, the model combines the strengths of two base learners — Random Forest and XGBoost — and feeds their probability outputs into a Logistic Regression meta-model for the final prediction.
 
 ### Dataset
-- Source: `Churn_Modelling.csv`
-- Size: 10,000 bank customer records
-- Target variable: `Exited` (1 = churned, 0 = retained)
+- **Source:** [Churn Modelling Classification Dataset](https://www.kaggle.com/datasets/shrutimechlearn/churn-modelling?fbclid=IwY2xjawRnzTpleHRuA2FlbQIxMQBzcnRjBmFwcF9pZAEwAAEetVIMHBfQ9zu6EGyAg-ZywcnkkLxOxuHa0vbkLWd7w6ENVZ4mzZKoqi0Mi7g_aem_qsgcGPMjXHxlWmVI1Wn0Bw)
+- **Size:** 10,000 bank customer records
+- **Target variable:** `Exited` (1 = churned, 0 = retained)
 
 ### Methodology
 
@@ -70,15 +71,16 @@ Number of products held and customer age are the strongest predictors of churn. 
 
 ## Project 2: Customer Segmentation with K-Means Algorithm
 
+**Type:** Group Project  
 **File:** `Customer_Segmentation_with_KMeans_Algorithm.ipynb`
 
 ### Overview
 This project applies K-Means clustering to over 500,000 retail transaction records from a UK-based online gift store to segment customers into distinct behavioral groups. The goal is to help businesses understand different customer types and develop targeted marketing strategies for each segment.
 
 ### Dataset
-- Source: [Kaggle — Online Retail Customer Clustering](https://www.kaggle.com/datasets/hellbuoy/online-retail-customer-clustering/data)
-- Coverage: December 2010 – December 2011, UK-based online gift store
-- Size: 500,000+ transaction records
+- **Source:** [Online Retail Customer Clustering](https://www.kaggle.com/datasets/hellbuoy/online-retail-customer-clustering/data)
+- **Coverage:** December 2010 – December 2011, UK-based online gift store
+- **Size:** 500,000+ transaction records
 
 ### Methodology
 
@@ -123,6 +125,8 @@ This project applies K-Means clustering to over 500,000 retail transaction recor
 ---
 
 ## Project 3: Houston Temperature Prediction — Time Series Analysis
+
+**Type:** Solo Project 
 **File:** `Temperature_Prediction_Time_Series_Analysis.ipynb`
 
 ### Overview
@@ -135,8 +139,8 @@ real values, then retrained on the full dataset to generate the final
 future forecast.
 
 ### Dataset
-- **Source:** `temperature.csv` — 5 years of hourly temperature readings 
-  from 30 US/Canada cities and 6 Israeli cities
+- **Source:** [Hourly Weather Dataset](https://www.kaggle.com/datasets/selfishgene/historical-hourly-weather-data?select=temperature.csv)
+- **Coverage:** 5 years of hourly temperature readings from 30 US/Canada cities and 6 Israeli cities
 - **Scope:** Houston, Texas only
 - **Resampled** to monthly averages for modeling
 
@@ -214,15 +218,16 @@ temperature trajectory.
 
 ## Project 4: Time Series EDA on Electricity Load (PJME)
 
+**Type:** Solo Project 
 **File:** `Time_Series_Exploratory_Data_Analysis_on_Electricity_Load.ipynb`
 
 ### Overview
 This notebook performs an in-depth exploratory data analysis on the PJM East (PJME) hourly electricity load dataset, analyzing consumption patterns across hourly, daily, monthly, and yearly time scales. The project uses seasonal decomposition and ACF/PACF analysis to uncover the structural components of electricity demand.
 
 ### Dataset
-- Source: `PJME_hourly.csv` — PJM Interconnection hourly electricity load data
-- Coverage: 2002–2018
-- Variable: `PJME_MW` — electricity load in megawatts
+- **Source:** `PJME_hourly.csv` — PJM Interconnection hourly electricity load data
+- **Coverage:** 2002–2018
+- **Variable:** `PJME_MW` — electricity load in megawatts
 
 ### Methodology
 
