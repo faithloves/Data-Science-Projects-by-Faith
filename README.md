@@ -19,14 +19,14 @@ This repository contains four Jupyter Notebook projects covering machine learnin
 
 ## Project 1: Bank Customer Churn Prediction
 
-**Type:** Group Project  
+**Type:** Group Project
 **File:** `Bank_Customer_Churn_Prediction.ipynb`
 
 ### Overview
 This project builds a stacking ensemble model to predict whether a bank customer is likely to churn (leave the bank). Rather than relying on a single algorithm, the model combines the strengths of two base learners — Random Forest and XGBoost — and feeds their probability outputs into a Logistic Regression meta-model for the final prediction.
 
 ### Dataset
-- **Source:** [Churn Modelling Classification Dataset](https://www.kaggle.com/datasets/shrutimechlearn/churn-modelling?fbclid=IwY2xjawRnzTpleHRuA2FlbQIxMQBzcnRjBmFwcF9pZAEwAAEetVIMHBfQ9zu6EGyAg-ZywcnkkLxOxuHa0vbkLWd7w6ENVZ4mzZKoqi0Mi7g_aem_qsgcGPMjXHxlWmVI1Wn0Bw)
+- **Source:** [Churn Modelling Classification Dataset](https://www.kaggle.com/datasets/shrutimechlearn/churn-modelling)
 - **Size:** 10,000 bank customer records
 - **Target variable:** `Exited` (1 = churned, 0 = retained)
 
@@ -39,17 +39,17 @@ This project builds a stacking ensemble model to predict whether a bank customer
 
 **Feature Engineering**
 - Created `AgeGroup` — customers binned into five age categories (Young Adults, Early Middle-Age, Mid-Life Adults, Pre-Retirement, Retirees & Seniors) to help the model generalize across age-related behavioral patterns
-- Created `BalanceSalaryRatio` — balance normalized by estimated salary to capture relative financial stability, preventing high-salary customers from distorting the balance feature's importance, and values are capped at the 99th percentile to prevent extreme outliers from distorting model predictions
+- Created `BalanceSalaryRatio` — balance normalized by estimated salary to capture relative financial stability, preventing high-salary customers from distorting the balance feature's importance; values are capped at the 99th percentile to prevent extreme outliers from distorting model predictions
 
-### Modeling: Stacking Ensemble
+**Modeling: Stacking Ensemble**
 
 The stacking pipeline follows these steps:
 
-1. **Base Model 1 — Random Forest** (`n_estimators=100`, `max_depth=10`, `class_weight="balanced"`) accounts for class imbalance using balanced weights.
-2. **Base Model 2 — XGBoost** (`n_estimators=100`, `max_depth=5`, `eval_metric="logloss"`) uses `scale_pos_weight` computed from the actual class ratio in the training set to handle imbalance.
-3. **Out-of-Fold (OOF) Predictions** are generated for both base models using 5-fold cross-validation. Each fold is predicted by a model that was never trained on it, producing honest, unbiased probability estimates and preventing data leakage into the meta-model.
-4. **Meta-Feature Scaling** is applied via `StandardScaler` before training the meta-model, ensuring Logistic Regression receives consistently scaled inputs.
-5. **Meta-Model — Logistic Regression** is trained on the scaled OOF predictions, learning the optimal blend of both base models' outputs into a final churn probability.
+1. **Base Model 1 — Random Forest** (`n_estimators=100`, `max_depth=10`, `class_weight="balanced"`) accounts for class imbalance using balanced weights
+2. **Base Model 2 — XGBoost** (`n_estimators=100`, `max_depth=5`, `eval_metric="logloss"`) uses `scale_pos_weight` computed from the actual class ratio in the training set to handle imbalance
+3. **Out-of-Fold (OOF) Predictions** are generated for both base models using 5-fold cross-validation. Each fold is predicted by a model that was never trained on it, producing honest, unbiased probability estimates and preventing data leakage into the meta-model
+4. **Meta-Feature Scaling** is applied via `StandardScaler` before training the meta-model, ensuring Logistic Regression receives consistently scaled inputs
+5. **Meta-Model — Logistic Regression** is trained on the scaled OOF predictions, learning the optimal blend of both base models' outputs into a final churn probability
 
 **Evaluation**
 - Cross-validation accuracy: **85.67%**
@@ -65,13 +65,13 @@ The stacking pipeline follows these steps:
 Number of products held and customer age are the strongest predictors of churn. Active membership status also significantly impacts retention. Features like `HasCrCard`, `Tenure`, and `Gender` contribute minimally to prediction.
 
 ### Libraries
-`pandas`, `numpy`, `matplotlib`, `seaborn`, `scikit-learn`, `xgboost`
+`pandas` `numpy` `matplotlib` `seaborn` `scikit-learn` `xgboost`
 
 ---
 
 ## Project 2: Customer Segmentation with K-Means Algorithm
 
-**Type:** Group Project  
+**Type:** Group Project
 **File:** `Customer_Segmentation_with_KMeans_Algorithm.ipynb`
 
 ### Overview
@@ -107,6 +107,7 @@ This project applies K-Means clustering to over 500,000 retail transaction recor
 - While the elbow suggested k=2, k=4 was selected to capture more nuanced behavioral differences relevant to practical marketing use cases
 
 **Resulting Customer Segments**
+
 | Segment | Behavior Profile |
 |---|---|
 | Occasional Buyers | Low frequency, low spend |
@@ -120,23 +121,17 @@ This project applies K-Means clustering to over 500,000 retail transaction recor
 - **Occasional Buyers:** Re-engagement campaigns, discount promotions to increase purchase frequency
 
 ### Libraries
-`pandas`, `numpy`, `matplotlib`, `seaborn`, `scikit-learn`
+`pandas` `numpy` `matplotlib` `seaborn` `scikit-learn`
 
 ---
 
 ## Project 3: Houston Temperature Prediction — Time Series Analysis
 
-**Type:** Solo Project 
+**Type:** Solo Project
 **File:** `Temperature_Prediction_Time_Series_Analysis.ipynb`
 
 ### Overview
-This project forecasts Houston, Texas's monthly average temperature for 
-the next 6 months beyond the available data (December 2017 – May 2018) 
-using ARIMA-based time series models. Two approaches are developed and 
-compared — manually specified ARIMA and automatically optimized 
-Auto-ARIMA — first validated on a held-out 12-month test set against 
-real values, then retrained on the full dataset to generate the final 
-future forecast.
+This project forecasts Houston, Texas's monthly average temperature for the next 6 months beyond the available data (December 2017 – May 2018) using ARIMA-based time series models. Two approaches are developed and compared — manually specified ARIMA and automatically optimized Auto-ARIMA — first validated on a held-out 12-month test set against real values, then retrained on the full dataset to generate the final future forecast.
 
 ### Dataset
 - **Source:** [Hourly Weather Dataset](https://www.kaggle.com/datasets/selfishgene/historical-hourly-weather-data?select=temperature.csv)
@@ -148,13 +143,11 @@ future forecast.
 
 **Data Preprocessing & Feature Engineering**
 - Parsed datetime index and extracted Houston temperature column
-- Handled missing values via linear interpolation with forward/backward 
-  fill for edge cases
+- Handled missing values via linear interpolation with forward/backward fill for edge cases
 - Resampled hourly data to monthly averages
 
 **Exploratory Data Analysis**
-- Monthly temperature plot revealed clear seasonality with no significant 
-  long-term trend
+- Monthly temperature plot revealed clear seasonality with no significant long-term trend
 - July recorded the highest average monthly temperature (301.98 K)
 - January recorded the lowest average monthly temperature (284.92 K)
 
@@ -162,32 +155,25 @@ future forecast.
 - ADF Statistic ≈ -0.045 (greater than 5% critical value of -2.89)
 - p-value ≈ 0.95 (greater than 0.05)
 - Result: Series is non-stationary → first differencing required
-- Note: Differencing is handled internally by the models (d=1), 
-  not applied as a preprocessing step, to ensure a fair comparison
+- Note: Differencing is handled internally by the models (d=1), not applied as a preprocessing step, to ensure a fair comparison
 
 **ACF and PACF Analysis**
 - ACF showed significant autocorrelation up to lag 3 → q = 3
 - PACF showed cutoff at lag 2 → p = 2
-- These findings inform the Manual ARIMA parameter selection and 
-  confirm d = 1 is appropriate
+- These findings inform the Manual ARIMA parameter selection and confirm d = 1 is appropriate
 
 **Train/Test Split**
 - Training set: November 2012 – December 2016
 - Test set: January 2017 – November 2017 (12 months, held out)
-- Both models trained on training set and evaluated against real 
-  held-out values for valid out-of-sample assessment
+- Both models trained on training set and evaluated against real held-out values for valid out-of-sample assessment
 
 **Models Compared**
 
 *Auto-ARIMA — order (3, 1, 2), seasonal (0, 0, 0)[12]*
-- Automatically selected optimal parameters via AIC-based grid search 
-  over the full parameter space (`stepwise=False`)
+- Automatically selected optimal parameters via AIC-based grid search over the full parameter space (`stepwise=False`)
 - `d=1` fixed based on ADF test result confirming non-stationarity
-- `D=0` set to prevent seasonal over-differencing, justified by the 
-  stable seasonal amplitude observed in EDA
-- The selected seasonal order (0, 0, 0)[12] indicates that no seasonal 
-  AR, MA, or differencing terms were needed — the regular ARIMA(3, 1, 2) 
-  terms were sufficient to capture the seasonal pattern
+- `D=0` set to prevent seasonal over-differencing, justified by the stable seasonal amplitude observed in EDA
+- The selected seasonal order (0, 0, 0)[12] indicates that no seasonal AR, MA, or differencing terms were needed — the regular ARIMA(3, 1, 2) terms were sufficient to capture the seasonal pattern
 - **Test Set Metrics — MAE: 0.919 K | MSE: 1.757 | RMSE: 1.325 K**
 
 *Manual ARIMA — order (2, 1, 3)*
@@ -197,28 +183,19 @@ future forecast.
 **Future Forecast (Dec 2017 – May 2018)**
 - Both models retrained on full dataset after validation
 - Forecasts from both models are nearly identical (max difference: 0.15 K)
-- Predicted trajectory: winter low ~290 K (January 2018) rising to 
-  ~298.5 K by May 2018, consistent with Houston's historical seasonal pattern
+- Predicted trajectory: winter low ~290 K (January 2018) rising to ~298.5 K by May 2018, consistent with Houston's historical seasonal pattern
 
 ### Key Findings
-Both models performed comparably well on the held-out test set, with 
-average errors below 1 Kelvin. Auto-ARIMA achieved marginally lower 
-error metrics across all measures and is selected as the primary model. 
-A notable finding is that Auto-ARIMA required domain-informed constraints 
-— derived from ADF testing and EDA — to avoid over-differencing and 
-produce a meaningful forecast. The final 6-month forecasts from both 
-models are in strong agreement, supporting confidence in the predicted 
-temperature trajectory.
+Both models performed comparably well on the held-out test set, with average errors below 1 Kelvin. Auto-ARIMA achieved marginally lower error metrics across all measures and is selected as the primary model. A notable finding is that Auto-ARIMA required domain-informed constraints — derived from ADF testing and EDA — to avoid over-differencing and produce a meaningful forecast. The final 6-month forecasts from both models are in strong agreement, supporting confidence in the predicted temperature trajectory.
 
 ### Libraries
-`pandas`, `numpy`, `matplotlib`, `seaborn`, `statsmodels`, `pmdarima`, 
-`scikit-learn`
+`pandas` `numpy` `matplotlib` `seaborn` `statsmodels` `pmdarima` `scikit-learn`
 
 ---
 
 ## Project 4: Time Series EDA on Electricity Load (PJME)
 
-**Type:** Solo Project 
+**Type:** Solo Project
 **File:** `Time_Series_Exploratory_Data_Analysis_on_Electricity_Load.ipynb`
 
 ### Overview
@@ -257,7 +234,7 @@ This notebook performs an in-depth exploratory data analysis on the PJM East (PJ
 - ACF and PACF plots used to identify autocorrelation structure in the series
 
 ### Libraries
-`pandas`, `matplotlib`, `statsmodels`
+`pandas` `matplotlib` `statsmodels`
 
 ---
 
@@ -276,8 +253,10 @@ This notebook performs an in-depth exploratory data analysis on the PJM East (PJ
 
 ## Author
 
-**Clarissa Faith Cordero Santiago**  
-BS Data Science — Mapúa University, School of Information Technology  
-Manila, Philippines  
-Email: cfcsantiago@mymail.mapua.edu.ph / santiagoclarissafaith@gmail.com  
-LinkedIn: [linkedin.com/in/clarissa-faith-santiago](https://www.linkedin.com/in/clarissa-faith-santiago)
+**Clarissa Faith Cordero Santiago**
+BS Data Science — Mapúa University, School of Information Technology
+Manila, Philippines
+
+- **Portfolio:** datascienceportfol.io/clarissafaith
+- **Email:** cfcsantiago@mymail.mapua.edu.ph / santiagoclarissafaith@gmail.com
+- **LinkedIn:** [linkedin.com/in/clarissa-faith-santiago](https://www.linkedin.com/in/clarissa-faith-santiago)
