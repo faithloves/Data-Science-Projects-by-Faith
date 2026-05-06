@@ -19,7 +19,7 @@ This repository contains four Jupyter Notebook projects covering machine learnin
 
 ## Project 1: Bank Customer Churn Prediction
 
-**Type:** Group Project
+**Type:** Group Project  
 **File:** `Bank_Customer_Churn_Prediction.ipynb`
 
 ### Overview
@@ -71,7 +71,7 @@ Number of products held and customer age are the strongest predictors of churn. 
 
 ## Project 2: Customer Segmentation with K-Means Algorithm
 
-**Type:** Group Project
+**Type:** Group Project  
 **File:** `Customer_Segmentation_with_KMeans_Algorithm.ipynb`
 
 ### Overview
@@ -127,7 +127,7 @@ This project applies K-Means clustering to over 500,000 retail transaction recor
 
 ## Project 3: Houston Temperature Prediction — Time Series Analysis
 
-**Type:** Solo Project
+**Type:** Solo Project  
 **File:** `Temperature_Prediction_Time_Series_Analysis.ipynb`
 
 ### Overview
@@ -195,7 +195,7 @@ Both models performed comparably well on the held-out test set, with average err
 
 ## Project 4: Time Series EDA on Electricity Load (PJME)
 
-**Type:** Solo Project
+**Type:** Solo Project  
 **File:** `Time_Series_Exploratory_Data_Analysis_on_Electricity_Load.ipynb`
 
 ### Overview
@@ -257,6 +257,6 @@ This notebook performs an in-depth exploratory data analysis on the PJM East (PJ
 BS Data Science — Mapúa University, School of Information Technology
 Manila, Philippines
 
-- **Portfolio:** datascienceportfol.io/clarissafaith
+- **Portfolio:**datascienceportfol.io/clarissafaith
 - **Email:** cfcsantiago@mymail.mapua.edu.ph / santiagoclarissafaith@gmail.com
 - **LinkedIn:** [linkedin.com/in/clarissa-faith-santiago](https://www.linkedin.com/in/clarissa-faith-santiago)
