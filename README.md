@@ -78,7 +78,7 @@ Number of products held and customer age are the strongest predictors of churn. 
 This project applies K-Means clustering to over 500,000 retail transaction records from a UK-based online gift store to segment customers into distinct behavioral groups. The goal is to help businesses understand different customer types and develop targeted marketing strategies for each segment.
 
 ### Dataset
-- **Source:** [Online Retail Customer Clustering](https://www.kaggle.com/datasets/hellbuoy/online-retail-customer-clustering/data)
+- **Source:** [Online Retail Customer Clustering Dataset](https://www.kaggle.com/datasets/hellbuoy/online-retail-customer-clustering/data)
 - **Coverage:** December 2010 – December 2011, UK-based online gift store
 - **Size:** 500,000+ transaction records
 
