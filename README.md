@@ -257,6 +257,6 @@ This notebook performs an in-depth exploratory data analysis on the PJM East (PJ
 BS Data Science — Mapúa University, School of Information Technology
 Manila, Philippines
 
-- **Portfolio:** datascienceportfol.io/clarissafaith
+- **Portfolio:** [datascienceportfol.io/clarissafaith](https://www.datascienceportfol.io/clarissafaith)
 - **Email:** cfcsantiago@mymail.mapua.edu.ph / santiagoclarissafaith@gmail.com
 - **LinkedIn:** [linkedin.com/in/clarissa-faith-santiago](https://www.linkedin.com/in/clarissa-faith-santiago)
