@@ -2,16 +2,17 @@
 
 **BS Data Science | Mapúa University | School of Information Technology**
 
-This repository contains four Jupyter Notebook projects covering machine learning, customer analytics, and time series analysis. Each notebook demonstrates an end-to-end data science workflow — from raw data cleaning and exploratory analysis through to modeling, evaluation, and business or scientific interpretation.
+This repository showcases five data science and analytics projects spanning supervised machine learning, unsupervised learning, time series analysis, and spreadsheet analytics. The work covers a range of domains — from banking and retail to climate and energy — and demonstrates both Python-based end-to-end workflows (data preprocessing, modeling, evaluation, and interpretation) and advanced spreadsheet analysis in Excel. Projects range from group collaborations to independent solo work, reflecting hands-on experience with diverse datasets and practical business applications.
 
 ---
 
 ## Repository Contents
 
-| Notebook | Type | Key Techniques |
+| Project | Type | Key Techniques |
 |---|---|---|
 | Bank Customer Churn Prediction | Supervised ML | Stacking Ensemble, Random Forest, XGBoost |
 | Customer Segmentation with K-Means | Unsupervised ML | K-Means Clustering, EDA, Feature Engineering |
+| Retail Sales Data Analysis | Spreadsheet Analysis | PivotTables, VLOOKUP/XLOOKUP, Data Validation, Charts |
 | Houston Temperature Prediction | Time Series Forecasting | ARIMA, Auto-ARIMA, Stationarity Testing |
 | Electricity Load Time Series EDA | Time Series EDA | Seasonal Decomposition, ACF/PACF, Trend Analysis |
 
@@ -125,7 +126,72 @@ This project applies K-Means clustering to over 500,000 retail transaction recor
 
 ---
 
-## Project 3: Houston Temperature Prediction — Time Series Analysis
+## Project 3: Retail Sales Data Analysis — Advanced Spreadsheet Analysis
+
+**Type:** Individual Project  
+**File:** `Excel_Retail_Sales_Analysis.xlsx`
+
+### Overview
+This project applies advanced spreadsheet techniques to analyze retail sales data across 50,000+ order records. The workflow covers data integration, integrity checking, metric calculation, multi-dimensional PivotTable analysis, and visualization — culminating in an executive summary with actionable business recommendations.
+
+### Dataset
+- **Source:** Two raw datasets — `Online_Orders.csv` (order transactions) and `Product_SKU.csv` (product reference data)
+- **Size:** 50,000+ order records; 500 product SKUs
+- **Key variables:** `OrderID`, `CustomerID`, `ProductID`, `OrderQuantity`, `OrderDate`, `ProductCategory`, `UnitPrice`
+
+### Methodology
+
+**Data Preparation & Integration**
+- Merged both datasets into a single master sheet using `VLOOKUP`/`XLOOKUP`, bringing `ProductCategory` and `UnitPrice` from the SKU reference table into the orders sheet on a matching `ProductID` key
+- Wrapped lookups in `IFERROR` to label unmatched products as `"UNKNOWN"` instead of returning errors
+- Used `COUNTIF` to detect duplicate `OrderID` entries and verify data integrity across all records
+- Extracted `Order_Month` and `Order_Day` from the `OrderDate` column using date functions to enable time-based analysis
+
+**Key Metric Calculation**
+- Computed `Total_Revenue` per order by multiplying `OrderQuantity` by the looked-up `UnitPrice`
+- Applied data validation on the `OrderQuantity` column to enforce positive whole numbers only
+
+**PivotTable Analysis**
+- Built PivotTables to analyze ₱62.98M in total revenue across six product categories, 12 months, and 7 days of the week
+- Created a multi-dimensional Category × Month breakdown with conditional formatting to surface highest and lowest performing segments
+- Identified the top 5 customers by total revenue and profiled their purchase behavior by product category
+
+**Visualization**
+- Line chart: monthly sales trend over the year
+- Bar chart: total revenue contribution by product category
+- Line chart: revenue by day of week
+
+### Key Findings
+
+**Revenue by Category**
+
+| Product Category | Total Revenue |
+|---|---|
+| Home Goods | ₱12,821,170.10 |
+| Apparel | ₱12,483,784.73 |
+| Groceries | ₱12,480,054.02 |
+| Electronics | ₱11,743,569.32 |
+| Books | ₱7,346,714.60 |
+| Toys | ₱6,106,607.68 |
+| **Grand Total** | **₱62,981,900.45** |
+
+- **Top categories:** Home Goods, Apparel, and Groceries each generated ~₱12.5M, with Toys and Books as the weakest performers
+- **Seasonal trend:** Monthly sales remained relatively stable (~₱4.7M–₱5.4M), with February as the lowest-performing month and July as the peak
+- **Day of week:** Monday recorded the highest revenue; Sunday was the lowest-grossing day across the week
+- **Top customer:** Customer ID 3284 led total revenue at ₱24,775.41, with Books as their primary category
+
+### Business Recommendations
+- Target February with Valentine's-themed promotions to address its consistent underperformance
+- Introduce Sunday discount bundles or flash sales to boost the week's weakest sales day
+- Prioritize inventory and marketing spend on Home Goods, Apparel, and Groceries as the highest-revenue categories
+- Develop loyalty incentives for top customers to sustain their high spend
+
+### Tools
+`Microsoft Excel` — PivotTables, VLOOKUP/XLOOKUP, IFERROR, COUNTIF, Conditional Formatting, Data Validation, Charts
+
+---
+
+## Project 4: Houston Temperature Prediction — Time Series Analysis
 
 **Type:** Solo Project  
 **File:** `Temperature_Prediction_Time_Series_Analysis.ipynb`
@@ -193,7 +259,7 @@ Both models performed comparably well on the held-out test set, with average err
 
 ---
 
-## Project 4: Time Series EDA on Electricity Load (PJME)
+## Project 5: Time Series EDA on Electricity Load (PJME)
 
 **Type:** Solo Project  
 **File:** `Time_Series_Exploratory_Data_Analysis_on_Electricity_Load.ipynb`
@@ -248,6 +314,7 @@ This notebook performs an in-depth exploratory data analysis on the PJM East (PJ
 | Machine Learning | scikit-learn, xgboost |
 | Time Series | statsmodels, pmdarima |
 | Environment | Jupyter Notebook |
+| Spreadsheet Analysis | Microsoft Excel |
 
 ---
 
